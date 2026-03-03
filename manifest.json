@@ -1,0 +1,74 @@
+{
+  "manifest_version": 3,
+  "name": "RewardsFindr",
+  "version": "0.1.0",
+  "description": "Automatically syncs your bank offers so RewardsFindr can recommend the best card at any store.",
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_title": "RewardsFindr"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.chase.com/web/auth/dashboard*",
+        "https://*.chase.com/digital/offers*",
+        "https://*.chase.com/*offers*"
+      ],
+      "js": ["content/chase.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.americanexpress.com/en-us/benefits/offers*",
+        "https://www.americanexpress.com/*offers*"
+      ],
+      "js": ["content/amex.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "identity",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "https://*.chase.com/*",
+    "https://*.americanexpress.com/*",
+    "https://identitytoolkit.googleapis.com/*",
+    "https://www.googleapis.com/*"
+  ],
+
+  "oauth2": {
+    "client_id": "963869613685-scqumt7gu71lorarafru2gbfe41viuip.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
